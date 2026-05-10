@@ -4,4 +4,5 @@
 *.js text eol=lf
 *.md text eol=lf
 *.svg text eol=lf
+*.tex text eol=lf
 *.pdf binary

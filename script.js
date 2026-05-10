@@ -2,6 +2,7 @@ const toggle = document.querySelector(".menu-toggle");
 const nav = document.querySelector(".nav");
 const filterButtons = document.querySelectorAll(".filter-btn");
 const caseCards = document.querySelectorAll(".case-card");
+const resumeLinks = document.querySelectorAll(".resume-download");
 
 if (toggle && nav) {
   toggle.addEventListener("click", () => {
@@ -36,6 +37,33 @@ filterButtons.forEach(button => {
       const isVisible = filter === "all" || categories.includes(filter);
       card.hidden = !isVisible;
     });
+  });
+});
+
+resumeLinks.forEach(link => {
+  link.addEventListener("click", async event => {
+    event.preventDefault();
+
+    const url = link.href;
+    const fileName = link.getAttribute("download") || "Ashish_Prajapati_Resume.pdf";
+
+    try {
+      const response = await fetch(url, { cache: "no-store" });
+      if (!response.ok) throw new Error("Resume PDF could not be fetched.");
+
+      const blob = await response.blob();
+      const objectUrl = URL.createObjectURL(blob);
+      const temporaryLink = document.createElement("a");
+
+      temporaryLink.href = objectUrl;
+      temporaryLink.download = fileName;
+      document.body.appendChild(temporaryLink);
+      temporaryLink.click();
+      temporaryLink.remove();
+      URL.revokeObjectURL(objectUrl);
+    } catch {
+      window.location.href = url;
+    }
   });
 });
 
