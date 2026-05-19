@@ -35,6 +35,11 @@ body {
     var(--bg);
 }
 
+img, svg, video, canvas, iframe {
+  max-width: 100%;
+  height: auto;
+}
+
 body.menu-open {
   overflow: hidden;
 }
@@ -104,7 +109,9 @@ section[id] {
 }
 
 .content-wrap {
-  width: min(1160px, calc(100% - 40px));
+  width: 100%;
+  max-width: 1160px;
+  padding: 0 20px;
   margin: 0 auto;
 }
 
@@ -691,7 +698,7 @@ a.artifact-card:hover .artifact-cta {
   }
 
   .content-wrap {
-    width: min(100% - 28px, 1160px);
+    padding: 0 14px;
   }
 
   .topbar {
@@ -766,8 +773,8 @@ a.artifact-card:hover .artifact-cta {
   position: fixed;
   top: 0;
   left: 0;
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  height: 100%;
   background: rgba(15, 32, 51, 0.4);
   backdrop-filter: blur(4px);
   z-index: 1000;
@@ -785,8 +792,8 @@ a.artifact-card:hover .artifact-cta {
   position: fixed;
   top: 0;
   right: -600px;
-  width: min(600px, 100vw);
-  height: 100vh;
+  width: min(600px, 100%);
+  height: 100%;
   background: var(--surface);
   z-index: 1001;
   box-shadow: -10px 0 40px rgba(15, 32, 51, 0.15);
@@ -854,6 +861,13 @@ a.artifact-card:hover .artifact-cta {
   border-bottom: 2px solid var(--line);
   gap: 1.5rem;
   margin-bottom: 1.8rem;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+
+.drawer-tabs::-webkit-scrollbar {
+  display: none;
 }
 
 .drawer-tab {
@@ -867,6 +881,8 @@ a.artifact-card:hover .artifact-cta {
   cursor: pointer;
   position: relative;
   transition: color 180ms ease;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .drawer-tab::after {
