@@ -357,16 +357,16 @@ section[id] {
   border-radius: var(--radius);
   background: var(--surface);
   box-shadow: 0 10px 26px rgba(21, 37, 56, 0.05);
-  transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
+  transition: transform 250ms cubic-bezier(0.16, 1, 0.3, 1), border-color 180ms ease, box-shadow 250ms ease;
 }
 
 .impact-card:hover,
 .case-card:hover,
 .skill-card:hover,
 .artifact-card:hover {
-  transform: translateY(-3px);
-  border-color: var(--line-strong);
-  box-shadow: var(--shadow);
+  transform: translateY(-4px) scale(1.015);
+  border-color: var(--accent);
+  box-shadow: 0 14px 34px rgba(15, 118, 110, 0.12);
 }
 
 .impact-card {
@@ -417,6 +417,27 @@ section[id] {
   display: none;
 }
 
+@media (min-width: 981px) {
+  .case-card.span-two {
+    grid-column: span 2;
+  }
+}
+
+@keyframes fadeInCase {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.case-card:not([hidden]) {
+  animation: fadeInCase 400ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
 .case-details {
   display: grid;
   gap: 0.85rem;
@@ -449,6 +470,29 @@ section[id] {
 .skill-card,
 .artifact-card {
   padding: 1.25rem;
+}
+
+a.artifact-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  text-decoration: none;
+  color: inherit;
+}
+
+.artifact-cta {
+  display: inline-flex;
+  align-items: center;
+  margin-top: 1.2rem;
+  color: var(--accent);
+  font-size: 0.88rem;
+  font-weight: 800;
+  transition: transform 180ms ease, color 180ms ease;
+}
+
+a.artifact-card:hover .artifact-cta {
+  color: var(--accent-dark);
+  transform: translateX(4px);
 }
 
 .chip-list {
@@ -712,4 +756,269 @@ section[id] {
     opacity: 1;
     transform: none;
   }
+}
+
+/* ==========================================================================
+   INTERACTIVE DRAWER OVERLAY, SPECS, CHARTS, AND BRD TABLES
+   ========================================================================== */
+
+.drawer-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(15, 32, 51, 0.4);
+  backdrop-filter: blur(4px);
+  z-index: 1000;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.drawer-overlay.open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.drawer {
+  position: fixed;
+  top: 0;
+  right: -600px;
+  width: min(600px, 100vw);
+  height: 100vh;
+  background: var(--surface);
+  z-index: 1001;
+  box-shadow: -10px 0 40px rgba(15, 32, 51, 0.15);
+  transition: right 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+  display: flex;
+  flex-direction: column;
+  padding: 2.5rem 2rem;
+  overflow-y: auto;
+}
+
+.drawer.open {
+  right: 0;
+}
+
+.drawer-close {
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  color: var(--text);
+  font-size: 1.5rem;
+  line-height: 1;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  transition: background 180ms ease, transform 180ms ease;
+}
+
+.drawer-close:hover {
+  background: var(--surface-soft);
+  transform: rotate(90deg);
+}
+
+.drawer-eyebrow {
+  color: var(--warm);
+  font-size: 0.74rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.drawer-title {
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+  font-size: 1.85rem;
+  font-weight: 800;
+  line-height: 1.15;
+}
+
+.drawer-subtitle {
+  color: var(--muted);
+  font-size: 0.96rem;
+  line-height: 1.5;
+  margin-bottom: 1.8rem;
+}
+
+.drawer-tabs {
+  display: flex;
+  border-bottom: 2px solid var(--line);
+  gap: 1.5rem;
+  margin-bottom: 1.8rem;
+}
+
+.drawer-tab {
+  background: none;
+  border: none;
+  padding: 0.5rem 0 0.8rem;
+  font-family: inherit;
+  font-size: 0.94rem;
+  font-weight: 700;
+  color: var(--muted);
+  cursor: pointer;
+  position: relative;
+  transition: color 180ms ease;
+}
+
+.drawer-tab::after {
+  content: "";
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: var(--accent);
+  transform: scaleX(0);
+  transition: transform 180ms ease;
+}
+
+.drawer-tab.active {
+  color: var(--accent-dark);
+}
+
+.drawer-tab.active::after {
+  transform: scaleX(1);
+}
+
+.drawer-tab:hover {
+  color: var(--text);
+}
+
+.drawer-pane {
+  display: none;
+}
+
+.drawer-pane.active {
+  display: block;
+  animation: fadeInCase 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Metric Bar Graph Visuals */
+.metric-bar-group {
+  margin-bottom: 1.5rem;
+}
+
+.metric-bar-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+}
+
+.metric-bar-label {
+  font-weight: 700;
+  font-size: 0.9rem;
+}
+
+.metric-bar-values {
+  font-size: 0.86rem;
+  font-weight: 800;
+  color: var(--muted);
+}
+
+.metric-bar-values span {
+  color: var(--text);
+}
+
+.metric-track {
+  width: 100%;
+  height: 8px;
+  background: var(--surface-soft);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.metric-fill {
+  height: 100%;
+  border-radius: 4px;
+  width: 0;
+  transition: width 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* BRD / FRD Snippet Tables */
+.brd-table-wrapper {
+  overflow-x: auto;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  margin-top: 0.5rem;
+}
+
+.brd-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.brd-table th, 
+.brd-table td {
+  padding: 0.75rem 1rem;
+  text-align: left;
+  font-size: 0.86rem;
+  border-bottom: 1px solid var(--line);
+  line-height: 1.5;
+}
+
+.brd-table th {
+  background: var(--surface-soft);
+  color: var(--text);
+  font-weight: 800;
+}
+
+.brd-table tr:last-child td {
+  border-bottom: none;
+}
+
+.brd-table tr:hover td {
+  background: rgba(238, 244, 247, 0.4);
+}
+
+/* Process Step Indicators */
+.step-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.step-item {
+  display: flex;
+  gap: 1rem;
+}
+
+.step-number {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--accent-soft);
+  color: var(--accent-dark);
+  font-weight: 800;
+  font-size: 0.88rem;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+}
+
+.step-details {
+  flex: 1;
+}
+
+.step-title {
+  font-weight: 800;
+  margin-top: 0.2rem;
+  margin-bottom: 0.2rem;
+  font-size: 0.94rem;
+  color: var(--text);
+}
+
+.step-desc {
+  font-size: 0.88rem;
+  color: var(--muted);
+  margin: 0;
+  line-height: 1.5;
 }
