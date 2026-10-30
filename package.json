@@ -1,0 +1,15 @@
+{
+  "name": "ashish-portfolio-site",
+  "version": "1.0.0",
+  "description": "Portfolio site for Ashish Prajapati - Business Systems Analyst",
+  "private": true,
+  "scripts": {
+    "test": "echo \"No tests specified\" && exit 0"
+  },
+  "keywords": [],
+  "author": "Ashish Prajapati",
+  "license": "MIT",
+  "dependencies": {
+    "@vercel/speed-insights": "^2.0.0"
+  }
+}
